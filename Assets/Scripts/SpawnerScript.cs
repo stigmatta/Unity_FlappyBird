@@ -9,14 +9,33 @@ public class SpawnerScript : MonoBehaviour
     private GameObject foodPrefab;
     [SerializeField]
     private GameObject fruitPrefab;
+    //[SerializeField]
+    //private GameObject nutPrefab;
     [SerializeField]
-    private GameObject nutPrefab;
+    private GameObject stats;
     private float foodOffsetMax = 4.3f;
     private float period = 1.5f;
     private float timeout;
     private float foodTimeout;
+
+    private TMPro.TextMeshProUGUI pipes;
+    private TMPro.TextMeshProUGUI cherries;
+    //private TMPro.TextMeshProUGUI nuts;
+    private TMPro.TextMeshProUGUI bugs;
+
+    private int pipeCount = 0;
+    private int cherryCount = 0;
+    private int nutCount = 0;
+    private int bugCount = 0;
+
+
     void Start()
     {
+        pipes = stats.transform.Find("Pipes/Text").GetComponent<TMPro.TextMeshProUGUI>();
+        cherries = stats.transform.Find("Cherries/Text").GetComponent<TMPro.TextMeshProUGUI>();
+        //nuts = stats.transform.Find("Nuts/Text").GetComponent<TMPro.TextMeshProUGUI>();
+        bugs = stats.transform.Find("Bugs/Text").GetComponent<TMPro.TextMeshProUGUI>();
+
         timeout = 0f;
         foodTimeout = period * period;
     }
@@ -42,6 +61,7 @@ public class SpawnerScript : MonoBehaviour
         GameObject pipe = Instantiate(pipePrefab);
         pipe.transform.position = this.transform.position+
             Random.Range(-pipeOffsetMax, pipeOffsetMax) * Vector3.up;
+        pipes.text = $"x{(++pipeCount)}";
     }
 
     private void SpawnFood()
@@ -53,15 +73,16 @@ public class SpawnerScript : MonoBehaviour
         {
             case 0:
                 food = Instantiate(foodPrefab);
+                bugs.text = $"x{(++bugCount)}";
                 break;
             case 1:
                 food = Instantiate(fruitPrefab);
+                cherries.text = $"x{(++cherryCount)}";
                 break;
             case 2:
-                food = Instantiate(nutPrefab);
-                break;
-            case 3:
                 food = null;
+                //food = Instantiate(nutPrefab);
+                //nuts.text = $"x{(++nutCount)}";
                 break;
             default:
                 food = null;
